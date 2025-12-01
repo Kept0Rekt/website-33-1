@@ -12,7 +12,7 @@ export default function Footer() {
         {/* Logo */}
         <div className="flex flex-col items-center md:items-start">
           <img
-            src="/Final Logo.png"
+            src="/Final-Logo.png"
             alt="33 Logo"
             className="h-14 w-auto mb-3 opacity-100"
           />

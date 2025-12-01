@@ -20,7 +20,7 @@ export default function Navigation({ scrolled }: NavigationProps) {
           className="transition-opacity"
         >
           <img
-            src="/Final Logo.png"
+            src="/Final-Logo.png"
             alt="33 Logo"
             className="h-8 w-auto md:h-10 object-contain opacity-0 animate-fade-in"
           />

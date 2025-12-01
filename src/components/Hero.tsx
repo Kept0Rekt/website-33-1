@@ -22,7 +22,7 @@ export default function Hero() {
     <div className="page-container flex flex-col items-center">
       {/* your logo image */}
       <img
-        src="/Final Logo.png"
+        src="/Final-Logo.png"
         alt="33 Logo"
         className="w-[180px] md:w-[260px] lg:w-[300px] mx-auto mb-8"
       />

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase'; 
+import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import { validateApplicationData } from '../lib/validation'; 
 
 export default function Application() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -21,6 +22,19 @@ export default function Application() {
     setStatus('submitting');
     setMessage('');
 
+    if (!isSupabaseConfigured()) {
+      setStatus('error');
+      setMessage('Application service is not configured. Please try again later.');
+      return;
+    }
+
+    const validation = validateApplicationData(formData);
+    if (!validation.isValid) {
+      setStatus('error');
+      setMessage(validation.errors[0] || 'Please check your form entries.');
+      return;
+    }
+
     try {
       const applicationData: Record<string, string> = {
         full_name: `${formData.firstName} ${formData.lastName}`,
@@ -35,7 +49,7 @@ export default function Application() {
         applicationData.referral_source = formData.referralSource;
       }
 
-      const { error } = await supabase.from('applications').insert([applicationData]);
+      const { error } = await supabase!.from('applications').insert([applicationData]);
 
       if (error) throw error;
 
@@ -52,9 +66,14 @@ export default function Application() {
         reason: '',
       });
       setCurrentStep(1);
+
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
     } catch (error) {
       setStatus('error');
-      setMessage('An error occurred. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred. Please try again.';
+      setMessage(errorMessage);
       console.error('Error submitting application:', error);
     }
   };
